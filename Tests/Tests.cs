@@ -10,7 +10,7 @@ namespace ToDoList
   {
     public ToDoTest()
     {
-      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=todo_test;Integrated Security=SSPI;";
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=toDo;Integrated Security=SSPI;";
     }
 
     public void Dispose()
@@ -42,11 +42,24 @@ namespace ToDoList
 
       task01.Save();
       List<Task> testList = new List<Task>{task01};
+      List<Task> result = Task.GetAll();
 
       //Assert
       Assert.Equal(testList, result);
     }
 
+    [Fact]
+    public void Test_FindObjectById()
+    {
+      //Arrange
+      Task testTask = new Task("Mow the lawn");
+      testTask.Save();
 
+      //Act
+      Task foundTask = Task.Find(testTask.GetId());
+
+      //Assert
+      Assert.Equal(testTask, foundTask);
+    }
   }
 }

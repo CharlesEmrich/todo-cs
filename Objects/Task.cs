@@ -74,7 +74,6 @@ namespace ToDoList
     public void Save()
     {
       SqlConnection conn = DB.Connection();
-      SqlDataReader rdr;
       conn.Open();
 
       SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description) OUTPUT INSERTED.id VALUES (@TaskDescription);", conn);
@@ -83,15 +82,11 @@ namespace ToDoList
       descriptionParameter.ParameterName = "@TaskDescription";
       descriptionParameter.Value = this.GetDescription();
       cmd.Parameters.Add(descriptionParameter);
-      rdr = cmd.ExecuteReader();
+      SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
       {
-        int taskId = rdr.GetInt32(0);
-        string taskDescription = rdr.GetString(1);
-        Task newTask = new Task(taskDescription, taskId);
-        allTasks.Add(newTask);
-
+        this._id = rdr.GetInt32(0);
       }
       if(rdr != null)
       {
@@ -103,15 +98,42 @@ namespace ToDoList
       }
     }
 
+    public static Task Find(int searchId)
+    {
+      SqlConnection conn = DB.Connection();
+      Task returnedTask = new Task("");
 
+      conn.Open();
 
-    // public static void DeleteAll()
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //   SqlCommand cmd = new SqlCommand("DELETE FROM tasks;", conn);
-    //   cmd.ExecuteNonQuery();
-    // }
-    //
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE id = @TaskId;", conn);
+
+      SqlParameter idParameter = new SqlParameter();
+      idParameter.ParameterName = "@TaskId";
+      idParameter.Value = searchId.ToString();
+      cmd.Parameters.Add(idParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        returnedTask = new Task(rdr.GetString(1), rdr.GetInt32(0));
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return returnedTask;
+    }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM tasks;", conn);
+      cmd.ExecuteNonQuery();
+    }
   }
 }
