@@ -10,7 +10,7 @@ namespace ToDoList
   {
     public ToDoTest()
     {
-      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=toDo;Integrated Security=SSPI;";
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=toDoTest;Integrated Security=SSPI;";
     }
 
     public void Dispose()
