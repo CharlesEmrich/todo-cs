@@ -5,7 +5,7 @@ using Nancy;
 using Nancy.Owin;
 using Nancy.ViewEngines.Razor;
 
-namespace ToDoListDataBases
+namespace ToDoList
 {
   public class Startup
   {
@@ -14,12 +14,9 @@ namespace ToDoListDataBases
       app.UseOwin(x => x.UseNancy());
     }
   }
-  public static class DBConfigiuration
+  public static class DBConfiguration
   {
-    public static class DBConfigiuration
-    {
       public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=todo;Integrated Security=SSPI";
-    }
   }
   public class CustomRootPathProvider : IRootPathProvider
   {

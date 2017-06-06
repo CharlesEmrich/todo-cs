@@ -2,18 +2,51 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using Xunit;
 
 namespace ToDoList
 {
   public class ToDoTest : IDisposable
   {
-    public ToDOTest()
+    public ToDoTest()
     {
-      DBConfigiuration.ConnectionSTring = "Data Source=(localdb\mssqllocaldb);Initial Catalog=todo_test;Integrated Security=SSPI;";
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=todo_test;Integrated Security=SSPI;";
     }
-    public class Dispose()
+
+    public void Dispose()
     {
       Task.DeleteAll();
     }
+
+    [Fact]
+    public void Test_DataBaseIsEmpty()
+    {
+      int result = Task.GetAll().Count;
+      Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void Test_ReturnsTrueIfEqual()
+    {
+      Task task01 = new Task("Take out the trash");
+      Task task02 = new Task("Take out the trash");
+
+      //Assert
+      Assert.Equal(task01, task02);
+    }
+
+    [Fact]
+    public void Test_SavesDataBase()
+    {
+      Task task01 = new Task("Take out the trash");
+
+      task01.Save();
+      List<Task> testList = new List<Task>{task01};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+
   }
 }

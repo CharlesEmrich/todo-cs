@@ -7,8 +7,8 @@ namespace ToDoList
   {
     public static SqlConnection Connection()
     {
-      SqlConnection conn = new SqlConnection(DBConfigiuration.ConnectionString);
-        return conn;
+      SqlConnection conn = new SqlConnection(DBConfiguration.ConnectionString);
+      return conn;
     }
   }
 }
